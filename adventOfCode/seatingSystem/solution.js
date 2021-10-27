@@ -1,5 +1,5 @@
 // import input from "./input.js";
-const input = [
+const smallerInput = [
   ["L", ".", "L", "L", ".", "L", "L", ".", "L", "L"],
   ["L", "L", "L", "L", "L", "L", "L", ".", "L", "L"],
   ["L", ".", "L", ".", "L", ".", ".", "L", ".", "."],
@@ -11,18 +11,119 @@ const input = [
   ["L", ".", "L", "L", "L", "L", "L", "L", ".", "L"],
   ["L", ".", "L", "L", "L", "L", "L", ".", "L", "L"],
 ];
-console.log(input);
-console.log(getOccupiedSeatsAfterStable(input))
-function getOccupiedSeatsAfterStable(grid) {
-  let stabilized = 0;
-	while (stabilized === 0) {
-    console.log(stabilized, "stabilized");
-    stabilized = enforce(
-      grid.map((r) => r.map((s) => (s === "L" ? "#" : s))), //filling the seats
-			0,0
+const str = `LLLLLLLLLL.LLLLLL.LLLLLLLLLLLL.LL.LLLL.LLLLL.LLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLLL.LLLLL.LLLLLLL.LLLLLLLLLLLLL.LLLL.L.LLLLLLLLLL.LLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLL.LLLLLLLLLLLLLLLLLLLLL.LLLLLL..LLLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLLLLLLLLL.LL.LL.LLLLL.L.LLLLL.LLLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLLL.LLLLLLL.LLL.LL.LLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLLL.LLLLLL.LLLLL.LLLLLLL.LLL.L.LLLLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLLLL.LL
+LLLLLLLLLLLLLLLLL.LLLLLLLLLL.LLLLLLLLL.LLLLL.LLLLLLL.LLLL.L.LLLLLLLLLLLLL.LLLLLLLLLLLLLLLLLL
+.L.LL...LLLL.......L....L.LLLLLL.......LL....LL...L..L.LLL...LLL..L.L.L.L..L...............L
+LLLLLLLLLL.LL.LLL.LLLLLL.LLLLL.LLLLLLL.LLLLL.LLLLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLLL.LLLLLLLLLLLL.LLLLL.LLLL.LLLLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLLLLLLLL..LLLLLLLLLLLLLLLLLL
+LLLLLLL.LL.LLL.LLLLLLLLLLLLL.L.LLLLLLL.LLLLL.LLLLLLL.LLLLLL..LLLLLL.LLLLL.LLLLLL.LLLLLLLLLLL
+.......L.LLL........LL.L....L.LL...L.....L..LL......L.....L....L.LLLL...L....L..L.L........L
+LLLLLLLLLL.LLLLLLLLLLLLL.LLLLL.LLLLLLLLLLLLL.LLLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLLLLLLLLL
+LLLLLLLL.L.LLLLLL.LLLLLLLLLLLLLLLLLLLL.LLLLL.LLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLLLL.LLLLL.LLLLLLL.LLLLLL.LLLLL.LLLLLLLLLLLLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLLL.LLLLLLLLLLLL.LL.LLLL.LLLLL.LLLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLLLLLLLLL.LLL.LLLLLLLL.LLLLLLLLLLLLL.LLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLLLLLLLLL
+..L...L.........LL.LLLL...L...LL.L.L..L...L.L...LL..LL...L....L....LL.L...LLL........LLL....
+LLLLLLLL.L.LLLLLL.LLLLLL.LLLLL.LLLLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLLLLL.LLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLL.LLLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLL.LLLLLLLLLLLLL.LL.LLLLLLLLLLL.LLLLLL.LLLLLL.LL.LLLLLLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLLLL.LLLLL.LLLLLLL.LL.LLL.LLLLLL.LLLLLLLLLLLLLLLLLLLLLLLLL
+L..L...........L....L.LLLL........L..LL....L.L.......L.L.L.....LL......L.....LLL.LL.L.L.LL.L
+LLLLLLLLLLLLLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLLL.LLLLLLLLLLLL.LLLLLLLLLLLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLLLLLLLLL.LLLLLL.LLLLL.LLLLLLL.LLLLL.LLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLL
+LLLLLLLLLLLLLLLLL.LLLLLL.LLLLL.LLLLLLLLLLLLL.LLLLLLL.LLLLLL.LLLLL..LLLLLL.LLLLLLLLLLL.LLLLLL
+LLLLLLLLLLLLLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLLL.LLLLLLL.LLLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLLL.LLL
+LLLLLLLLLLLLLLLLL.LLLLLLLLLLLL.LLLLLLL.LLLLL.LLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLLLLL.LLL.LLLLL.LLLLLL..LLLLL.LLLLLLLLLLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLL
+..L.....LLL.L..L...L......LL......L.......LL..L.L.L.L....LLLL....L....L...LL...LLL.L....LLL.
+LLLLLLLLLL.LLLLLLLLLLLLL.LLLLL.LLLLLLL.LLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLL.LLL
+LLLLLLLLLLLLLLLLL.LLLLLLLLLLLL.LLLLLLLLLLLLLLLLLLLLL.LLLLL.LL.LL.L.LLLLLLLLLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLL.LLLLLLL.LLLLLL.LLLLLLLLLL.LL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLLLLLLLLL.LLLLLLLLLLLL.LLLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLLLLLLLLL.L.LLLLLLLLLL..LLLL
+LLLLL.LLLLLLLL.LLLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLLLLLLLLLLLLLLLL.LLLLL.LLLLLLL.LLLLLLLLLLLLLLLLLLLLLLLLLLL.L.LLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLLLLLLLLL.LLLLLLLLLLLL.LLLLLLLLLLLLL.LLLLLLL.LLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLLLLLLLL..LLLLLLLLLLLLLLLLLLLL.LLLLL.LLLLLLL.LLLLLL.LLLLLL.LLLLLL.LL.LLL.LLLLLLLLLLL
+.....LL.L...LL....L...L.L.....L...L.L.L.L.L.L.......LL.....L.LL.LL...LLL.L.....L...L......L.
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLL.LLLLLLL.LLLLL.LLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLL
+LLLLLLLLLLLLLLLLL.LLLLLL.LLLLL.LLLLLLL.LLLLL.LL..LLL.LLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLLLLLLLLL
+LLLLLLLLLLLLLLLLLLLLLLLL.LLLLL.LLLLLLL.L.LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLL.LLLLLLL.LLLLL.LLLLLLL.LLLLLLLLLL.LL.LLLLLLLLLLLLL.LLLLLLLLLL.
+LLLLLLLLLLLLLLLLL.LLLLLL.LLLLL.LLLLLLLLLLLLL.LLLLLLLLLLLLLL.LLLL.L.LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.L.LLLL.LLLLL.LLLLLLL.LLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLLLLLLL.L
+.L....LL....L....L.L....L......LL.....L..L.L....LL.......L......L.L..L.......L....L.LLL....L
+LLLLLLLLLLLLLLLLL.LLLLLL.LLLLL.LLLLLLL.LLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLLLLLLLLL.LLLLL.LLLLLLL.LLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLLLLLLLLL..LLLLL.LLLLLLL.LLLLL.LLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+.L......L....L.L..L....LL.......L.LL..LL.L.....L..L.L...............LL....L...L....L....L.LL
+LLLLLLLLL..LLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLL..LLLLLLLLL.LLLLLLLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLLLLLLLLL.LLLLL.LLLLLLLLLLLLL.LLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLL.LLLLL
+LLLLLLLLLL.LLLLLLLLLLLLL.LLLLL.LLLLLLL.LLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLL..LLLLLL.LLLLL.LLLLLLLLLLLL.L.LLLLLL..LLLLLLLLLLLL.LLLLLLLLLLL
+.L..L..L.L.L.L.L.L.....L.L...L....LL.L.L....L..L.L.L........L....LL.......LL....L...L.L..LL.
+LLLLLLLLLLLLLLLLLLLLLLLL.LLLLL.LLLLLLLLLLLLLLLLLLLLL..LLLLL.LLLLLL.LLLLL..LLLLLL.LLLLLLLLLLL
+L.LLLLLLLL.LLLLLL.LLLLLL.LLLLL.LLLLLLLLLLLLLLLLLLLLL.LLLLLLLLLLLLL.LL.LLLLLLLLLLLLLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLLLLLLLL.LLLLLLL.LLLLLLLLLLLLLLLLLLLL.L.LLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLLLLLLLL.LLLLLLL.LLLLL.LLLLLLL.LLLLLLLLLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLLL.LLLLL..LLLLL.LLLLLLLLLLLLL.LLLLL.L.LLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLLLLLLLLL.LLLLLLL.LLLLLLLLLLLLL.LLLLLL.LLLLLL..LLLLLLLLLL
+LLLLLLLLLLL.LLLLL.LLLLLL.LLLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLLLLLLLLL..LLLLL.LLLLLLLLLL.LLLLLLL
+LLLLLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLLL.LLLLL.LLLLLLL.LLLLLLLLLLL.L.L.LLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLLLLLLLLLLLLLLL.LLLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLL.LLLLLLLLLLLLL
+LLLLL....L.LL..LLL.L...LL.....L............L...............L..L.LLLLL.L.L.......L..LL.L...L.
+LLLLLLLLLL.LLLLLL.LLLLL..LLLLLLLLLLLLL.LLLLL.LLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLLL.LLLLL.LLLLLLL.LLL.LL.LLLLLL..LLLLL.LLLLLL.L.LLLLLLLLL
+LLLLLLLLLL.LLLLLLLLLLLLLLLLLLL.LLLLLLL.LLLLL.LLLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLLLLLLLLLL.LLLLLLLLLLLLLL.LLLLLLLLLLLLL.LLLLLLLL.LLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLL.L.LLLLL.LLLLL.LLLLLLLLLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLL
+.....L...L......L...LL.L.......LL.L...LL..LL.....L.......LL.LL......LL.L...L..L..L...L.LLL..
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLLL.LLLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLL..LLLLLLLLLL
+LLLLLL.LLL.LLLLLL.LLLLLL.LL.LL.LLLLLLL.LLLLL.LLLLLLL.LLLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLL.LLLLLLLLLLLLL.LLLLLLL.LLLLLL.LLLLLLLLLL.LLLLLLLLL.LLLLLLLLLLL
+LLL.LLL.LL..LLLLL.LLLLLL.LLLLL.LLLLLLL.LLLLLLLLLLLLL.LLLLLLL.LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL.
+LLLLLLLLL.LLLLLLL.LLLLLL.LLLLL.LLLLLLL.LLLLL.LLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLL.LLLLL
+LLLLLLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLLL.LLLLLLLLLLLLLL.LLLLL.LLLLLLLLLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.L.LLLLLLLLLL.LLLL.LL.LLLLL.LLLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLL.L.L.LLLLLLLLL
+LLLLLLLLLL.LLLLLLLLLLLLL.LLLLL.LLLLLLL.LLLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLL.LLLLLLLLLLLLL.LLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLL
+.LL.LLL.L.L.L..L....L..L...L......L......L.L.L...L.L..L.L.LLLLL..L.LL.LLL.L...LL.LL...L.L.L.
+LLLLLLLLLLLLLLLLLLLLLLLL.LLLLLLLLLLLLL.LLLLLLL.LLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLL.LLLLLLL
+LLLLLLLLLLLLLLLLL.LLLLLLLLLLLL.LLLLLLL.LLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLL.LLLLLLL.LLLLL.LLLLLLL.LLLLLL.LLLLL..LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLLLLLLLL.LLLLLLL.LLLLL.LLLLLLLLLLLLLLLLLLLLLLLLLLLL.LLLLLLLLLLLLLLLLLL
+LLLL.LLLLL.LLLLLLLLLLLLL.LLLLL.LLLLLLLLLLLLL.LLLLLLL.LLLLLL.LLLLL.LLLLLLLLLLLLLLLLLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLL.LL.LLLLLLLLLLLLLLLL.LLLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+..L.LLLL.L...LL.L....L..LL..L.....L....L.L...LL.......L.L..LL..LL............L...LL.....L...
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLLLL.LLLLLLLLLLLLL.LLLLLLLL.LLLL.LLLLLLLLLLL
+LLLLLLLLLLLLL.LLL.LLLLLL..LLLL.LLLLLLLLLLLLL.LLLLLLLLLLLLLL.LLLLLL.LLLLLL.LLLLLLLLLL..LLLLL.
+LLLLLLLLLL.LLLLLL..LLLLL.LLLLL.LLLLLLL..LLLL.LLLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLL.LLLLLLL.LLLLL.L.LLLLL.LLLLLLLLLLLLLL.LLLLL.LLLLLLLLLLLLLLLLLL
+LLLLLLLLLL.LLLLLL.LLLLLL.LLLLL.LLLLL.L.LLLLLLLLLLLLL.LL.LLLLL.LLLL.LLLLLL.LLLLLLLLLL.LLLLLLL
+LLLLLLLLLLLLLLLLL.LLLLLL.LLLLL.LLLLLLL.LLLLL..LLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLL.LLLLLLLLLLL
+LLLLLLLLLL.LLL.LLLLLLLLL.LLLLL.LLLLLLLLLLLL..LLLLLLL.LLLLL..LLLLLL.LLLLLL.LLLLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLLL.LLLLLL.LLLLL.LLLLLLL.LLLLLLLLLLLLL.LLLLLL.LLLLLL.LL.LLLLLLLLLL.LLLLLLLLLLL`;
+const input = smallerInput; // str.split("\n").map((r) => r.split(""));
+
+function getOccupiedSeatsAfterStable(input) {
+  let isStable = false;
+  let grid = input.map((r) => r.map((c) => c));
+  while (!isStable) {
+    const { grid: stabilizedGrid, ops } = shuffleOnce(
+      grid.map((r) => r.map((s) => s)) //filling the seats // (s === "L" ? "#" : s)
     );
+    isStable = ops === 0;
+    grid = stabilizedGrid.map((r) => r.map((c) => c));
+    console.table(grid);
+    console.log(isStable, ops);
   }
-  console.log(grid);
 
   return grid.reduce(
     (acc, row) => acc + row.filter((s) => s === "#").length,
@@ -30,24 +131,60 @@ function getOccupiedSeatsAfterStable(grid) {
   );
 }
 
-function enforce(grid, i, j, ops=0) {
-  if (i!= 0 && j!= 0 && ops === 0) return 1
-  if (!grid[i] || !grid[j]) return false; //out of bounds
-  // rule1
-  let occupiedNeigbors = getNeighbors(grid, i, j);
-  if (occupiedNeigbors >= 4) {
-    grid[i][j] = "L";
-    ops++;
-  }
-  if (occupiedNeigbors == 0) {
-    grid[i][j] = "#";
-    ops++;
+// function shuffleWithRules(grid, i, j, ops = 0) {
+//   if (i == grid.length - 1 && j == grid[0].length - 1) return ops === 0;
+//   // if (!grid[i] && !grid[j]) {
+//   //   return ops === 0;
+//   // }
+//   //out of bounds
+//   // rule1
+//   let occupiedNeigbors = getNeighbors(grid, i, j);
+//   if (occupiedNeigbors >= 4) {
+//     if (grid[i] && grid[i][j] && grid[i][j] !== "." && grid[i][j] !== "L") {
+//        grid[i][j] = "L";
+//       ops++;
+//     }
+//   }
+//   if (occupiedNeigbors == 0) {
+//     if (grid[i] && grid[i][j] && grid[i][j] !== "." && grid[i][j] != "#") {
+//       grid[i][j] = "#";
+//       ops++;
+//     }
+//   }
+//   console.log(i, j);
+//   if(i < grid.length - 1) {
+//     if(shuffleWithRules(grid, i + 1, j, ops)) return true;
+//   }
+//   if(j < grid[0].length - 1 ){
+//     if(shuffleWithRules(grid, i, j + 1, ops)) return true;
+//   }
+
+//   return ops === 0;
+// }
+window.shuffleOnce = shuffleOnce;
+function shuffleOnce(grid) {
+  // console.table(grid);
+  let ops = 0;
+  for (let row = 0; row < grid.length; row++) {
+    // console.log(row)
+    for (let col = 0; col < grid[0].length; col++) {
+      if (!grid[row] || (grid[row] && grid[row][col] === ".")) continue;
+      let occupiedNeigbors = getNeighbors(grid, row, col);
+      if (grid[row][col] == "L" && occupiedNeigbors == 0) {
+        grid[row][col] = "#";
+        ops++;
+        console.log(row, col);
+      }
+
+      if (grid[row][col] == "#" && occupiedNeigbors >= 4) {
+        grid[row][col] = "L";
+        ops++;
+        console.log(row, col);
+      }
+    }
   }
 
-  if (enforce(grid, i + 1, j, ops)) return true;
-  if (enforce(grid, i, j + 1, ops)) return true;
-
-  return ops;
+  return { grid, ops };
 }
 
 function getNeighbors(grid, i, j) {
@@ -64,10 +201,10 @@ function getNeighbors(grid, i, j) {
       occupiedNeigbors++;
     } //t-r
   }
-  if (grid[i][j - 1] == "#") {
+  if (grid[i] && grid[i][j - 1] == "#") {
     occupiedNeigbors++;
   } //l
-  if (grid[i][j + 1] == "#") {
+  if (grid[i] && grid[i][j + 1] == "#") {
     occupiedNeigbors++;
   } //r
   if (grid[i + 1]) {
@@ -84,3 +221,87 @@ function getNeighbors(grid, i, j) {
 
   return occupiedNeigbors;
 }
+
+//=======================
+
+const solve = async () => {
+  let borderedGrid = input.map((r) => r.map((s) => s));
+  const floorRow = Array(borderedGrid[0].length).fill(".");
+  borderedGrid = [floorRow, ...borderedGrid, floorRow];
+
+  let currentGrid = borderedGrid;
+  let isStable = false;
+  console.log("input==========");
+  console.table(currentGrid);
+  while (!isStable) {
+    const { newGrid, stable } = nextGeneration(currentGrid);
+    currentGrid = newGrid;
+    isStable = stable;
+  }
+  console.table(currentGrid);
+  console.log(charCount(currentGrid, "#"))
+  return charCount(currentGrid, "#");
+};
+
+const copy2D = (grid) => {
+  return grid.map((row) => [...row]);
+};
+
+const charCount = (grid, char) => {
+  let count = 0;
+  for (let i = 1; i < grid.length - 1; i += 1) {
+    for (let j = 1; j < grid[0].length - 1; j += 1) {
+      if (grid[i][j] === char) count += 1;
+    }
+  }
+  return count;
+};
+
+const nextGeneration = (grid) => {
+  const newGrid = copy2D(grid);
+
+  let isStable = true;
+  for (let i = 1; i < grid.length - 1; i += 1) {
+    for (let j = 1; j < grid[0].length - 1; j += 1) {
+      const center = grid[i][j];
+
+      const occupiedNeighbors = [
+        grid[i - 1][j] === "#",
+        grid[i + 1][j] === "#",
+        grid[i][j + 1] === "#",
+        grid[i][j - 1] === "#",
+        grid[i - 1][j + 1] === "#",
+        grid[i + 1][j + 1] === "#",
+        grid[i - 1][j - 1] === "#",
+        grid[i + 1][j - 1] === "#",
+      ];
+
+      let numOccupied = 0;
+      for (let val of occupiedNeighbors) {
+        if (val === true) numOccupied += 1;
+      }
+      // grid[i][j]=grid[i][j]+numOccupied
+      // console.log(i - 1, j, numOccupied);
+      if (center === "L" && numOccupied === 0) {
+        console.group(i + j + "");
+        console.log(i, j, newGrid[i][j]);
+        newGrid[i][j] = "#";
+        console.log(i, j, newGrid[i][j]);
+        console.groupEnd();
+        isStable = false;
+      } else if (center === "#" && numOccupied >= 4) {
+        console.group(i + j + "");
+        console.log(i - 1, j - 1, newGrid[i][j]);
+        newGrid[i][j] = "L";
+        console.log(i - 1, j - 1, newGrid[i][j]);
+        console.groupEnd();
+        isStable = false;
+      }
+    }
+  }
+  // console.table(grid)
+  return { newGrid, stable: isStable };
+};
+
+solve().then(console.log); // 2324
+console.log(getOccupiedSeatsAfterStable(input));
