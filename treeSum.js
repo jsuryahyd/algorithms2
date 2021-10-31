@@ -44,7 +44,7 @@ function treeSum_Loop(root) {
   while (yetTobeTraversed.length) {
     const current = yetTobeTraversed.pop();
     total += current.val;
-    current.left !== null && yetTobeTraversed.unshift(current.left);
+    current.left !== null && yetTobeTraversed.unshift(current.left);//populate
     current.right !== null && yetTobeTraversed.unshift(current.right);
   }
 	return total;

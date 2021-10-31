@@ -1,27 +1,44 @@
 // https://app.codility.com/c/feedback/demo585R8J-HME/
+// function solution(A) {
+//   // write your code in JavaScript (Node.js 8.9.4)
+//   const sorted = A.sort((a, b) => (a > b ? 1 : -1));
+//   // console.log(sorted)
+//   // let solution = sorted[A.length - 1] + 1;
+//   let solution = 1;
+//   // console.log(solution)
+//   if (sorted[A.length - 1] <= 0) return 1; //all items are less than 0
+//   for (let i = 0; i <= sorted.length; i++) {
+//     if (sorted[i] <= 0) {
+//       continue;
+//     }
+// 		if(sorted[i] < solution){
+// 			break;
+// 		}
+// 		if(sorted[i] == solution){
+// 			solution = sorted[i]+1
+// 		}
+//     // console.log(sorted[i]+1, sorted[i + 1] , solution)
+//   }
+
+//   return solution > 0 ? solution : 1;
+// }
+
 function solution(A) {
-  // write your code in JavaScript (Node.js 8.9.4)
-  const sorted = A.sort((a, b) => (a > b ? 1 : -1));
-  // console.log(sorted)
-  // let solution = sorted[A.length - 1] + 1;
-  let solution = 1;
-  // console.log(solution)
-  if (sorted[A.length - 1] <= 0) return 1; //all items are less than 0
-  for (let i = 0; i <= sorted.length; i++) {
-    if (sorted[i] <= 0) {
-      continue;
-    }
-		if(sorted[i] < solution){
-			break;
-		}
-		if(sorted[i] == solution){
-			solution = sorted[i]+1
-		}
-    // console.log(sorted[i]+1, sorted[i + 1] , solution)
+  var min = 1;
+  A.sort(function(a,b){
+     // Sort the array explicit way
+     return a - b; 
+  });
+
+  for (var i in A) {
+      if (A[i] > -1 && A[i] == min) {
+              min++;
+      }
   }
 
-  return solution > 0 ? solution : 1;
+  return min;
 }
+
 // function solution(A) {
 // 	const orderedArr = [];
 // 	for (let i = 0; i < A.length; i++) {
