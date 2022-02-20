@@ -30,40 +30,76 @@
 // }
 
 function knapSack(v, w, W) {
-  return solution(
+  return solution1(
     v.map((vi, i) => ({ value: vi, weight: w[i] })),
     W
   );
 }
-function solution(items, sum, memo = {}) {
+
+//todo: failing with memoization
+function solution1(items, sum, memo = {}) {
   if (sum == 0 || (sum > 0 && items.every((i) => i.weight > sum))) return 0;
   if (sum < 0) return null;
   let max = 0;
   for (let i = 0; i < items.length; i++) {
     const remaining = sum - items[i].weight;
     // if(memo[remaining])
-    // if(remaining<=0) continue
+    if(remaining<0) continue
     const restItems = items.slice();
     restItems.splice(i, 1);
     // console.log(memo[remaining],remaining)
-    memo[remaining] = memo[remaining] || solution(restItems, remaining, memo);
-    if (memo[remaining] != null) {
-      // console.log(max)
-			if (memo[remaining] + items[i].value > max) {
-				console.log(memo[remaining], items[i].value);
-			}
+    const key = restItems.map(r=>r.weight).join(",")+":"+remaining;
+
+    memo[key] = memo[key]!= null ? memo[key] :  solution1(restItems, remaining,memo); //memo[remaining]
+
+    // if(!memo[remaining]){
+    // }
+    if (memo[key] != null) {
       max =
-        memo[remaining] + items[i].value > max
-          ? memo[remaining] + items[i].value
+        memo[key] + items[i].value > max
+          ? memo[key] + items[i].value
           : max;
 
     }
   }
   // console.log(memo);
-  memo[sum] = max;
+  
+  memo[items.map(r=>r.weight).join(",")+":"+sum] = max;
   // console.log(sum,max)
   return max;
 }
+
+function solution2(v,w,W){
+
+  const table = Array(w+1).fill(0).map(_=>Array(v+1).fill(0));
+  console.table(table)
+
+
+}
+
+// [
+//   {
+//     input: [
+//       [0,1,2]
+//     ],
+//     output: 0,
+//   },
+//   {
+//     input: [[4,3,2,1]],
+//     output: 2,
+//   },
+// 	{
+//     input: [[1,2,3,4,5,6,7,8,9,0]],
+//     output: -1,
+//   }, {
+//     input: [[2,1,3,5,2]],
+//     output: 1,
+//   },
+// ].forEach((a, i) => {
+//   console.time("idx:" + i);
+//   expect(smallestEqual(...a.input)).to.eql(a.output);
+//   console.timeEnd("idx:" + i);
+// });
 
 expect(knapSack([60, 100, 120], [10, 20, 30], 50)).to.be(220);
 expect(knapSack([1, 2, 3], [4, 5, 1], 4)).to.be(3);
