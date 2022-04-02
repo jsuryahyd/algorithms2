@@ -1,0 +1,1 @@
+compile cpp program `g++ cppsolutions.cpp -o cppSols.exe`
