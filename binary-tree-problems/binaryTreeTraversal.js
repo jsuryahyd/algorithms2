@@ -1,10 +1,4 @@
-class TreeNode {
-  constructor(val) {
-    this.val = val;
-    this.left = null;
-    this.right = null;
-  }
-}
+import { TreeNode } from "./binaryTreeNode";
 
 const a = new TreeNode("a");
 const b = new TreeNode("b");
