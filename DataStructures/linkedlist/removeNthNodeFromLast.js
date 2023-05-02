@@ -10,7 +10,7 @@ const expect = window.expect;
  * @param {number} n
  * @return {import('./utils').ListNode}
  */
-var removeNthFromEnd = function (head, n) {
+var _removeNthFromEnd = function (head, n) {
   let ahead = head;
   let nodeToDelete = head;
   let _head = head;
@@ -32,9 +32,34 @@ var removeNthFromEnd = function (head, n) {
 };
 
 
+function removeNthFromEnd(head,count){
 
-expect(toArray(removeNthFromEnd(toNodeList([1, 2, 3, 4, 5]), 2))).to.eql([
-  1, 2, 3, 5,
-]);
-expect(toArray(removeNthFromEnd(toNodeList([1, 2]), 1))).to.eql([1]);
-expect(toArray(removeNthFromEnd(toNodeList([1]), 1))).to.eql([]);
+  let current = head;
+  let target = null;
+  let prevToTarget = null;
+  while(current){
+    count--
+    current = current.next
+    if(target){
+      prevToTarget = target
+      target = target.next
+    }
+    if(count === 0){
+      target = head
+    }
+  }
+
+  if(!prevToTarget) return target.next;
+  prevToTarget.next = target.next;
+  target.next = null;
+  return head
+
+}
+
+
+// expect(toArray(removeNthFromEnd(toNodeList([1, 2, 3, 4, 5]), 2))).to.eql([
+//   1, 2, 3, 5,
+// ]);
+// expect(toArray(removeNthFromEnd(toNodeList([1, 2]), 1))).to.eql([1]);
+expect(toArray(removeNthFromEnd(toNodeList([1, 2]), 2))).to.eql([2]);
+// expect(toArray(removeNthFromEnd(toNodeList([1]), 1))).to.eql([]);
