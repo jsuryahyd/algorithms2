@@ -1,25 +1,43 @@
 //todo: not working
-var rotate = function (matrix) {
-	const n = matrix.length
-  for (let i = 0; i < (matrix.length + 1) / 2; i++) {
-    for (let j = 0; j < matrix[i].length / 2; j++) {
-      // const temp = matrix[matrix.length - 1 - j][i];
-      // matrix[matrix.length - 1 - j][i] =
-      //   matrix[matrix.length - 1 - i][matrix.length - j - 1];
-      // matrix[matrix.length - 1 - i][matrix.length - j - 1] =
-      //   matrix[j][matrix.length - 1 - i];
-      // matrix[j][matrix.length - 1 - i] = matrix[i][j];
-      // matrix[i][j] = temp;
-			const tmp = matrix[n - 1 - j][i]
-			matrix[n - 1 - j][i] = matrix[n - 1 - i][n - j - 1]
-			matrix[n - 1 - i][n - j - 1] = matrix[j][n - 1 -i]
-			matrix[j][n - 1 - i] = matrix[i][j]
-			matrix[i][j] = tmp
+// var rotate = function (matrix) {
+// 	const n = matrix.length
+//   for (let i = 0; i < (matrix.length + 1) / 2; i++) {
+//     for (let j = 0; j < matrix[i].length / 2; j++) {
+//       // const temp = matrix[matrix.length - 1 - j][i];
+//       // matrix[matrix.length - 1 - j][i] =
+//       //   matrix[matrix.length - 1 - i][matrix.length - j - 1];
+//       // matrix[matrix.length - 1 - i][matrix.length - j - 1] =
+//       //   matrix[j][matrix.length - 1 - i];
+//       // matrix[j][matrix.length - 1 - i] = matrix[i][j];
+//       // matrix[i][j] = temp;
+// 			const tmp = matrix[n - 1 - j][i]
+// 			matrix[n - 1 - j][i] = matrix[n - 1 - i][n - j - 1]
+// 			matrix[n - 1 - i][n - j - 1] = matrix[j][n - 1 -i]
+// 			matrix[j][n - 1 - i] = matrix[i][j]
+// 			matrix[i][j] = tmp
+//     }
+//   }
+
+//   console.log(matrix);
+// };
+
+//working
+function rotate(matrix){
+
+  for(let i=0;i<matrix.length;i++){
+
+    for(let j=i+1;j<matrix.length;j++){
+      const temp = matrix[i][j] 
+      matrix[i][j] = matrix[j][i]
+      matrix[j][i] = temp;
     }
   }
 
-  console.log(matrix);
-};
+  matrix.forEach(r=>{
+    r.reverse()
+  })
+  console.log(matrix)
+}
 
 rotate([
   [1, 2, 3],
