@@ -1,4 +1,5 @@
 import bubbleSort from "./bubbleSort.js";
+import heapSort from "./heapSort.js";
 import insertionSort from "./insertionSort.js";
 import { iterativeMergeSort, mergeSort } from "./mergeSort.js";
 import quickSort from "./quickSort.js";
@@ -25,13 +26,20 @@ console.log('array length: ',data.length)
 function test(){
 	const oSorted = [...data].sort((a,b)=>a-b)
 	// const sorted = sortArray([...data])
-	const sorted = iterativeMergeSort([...data])
+	// const sorted = iterativeMergeSort([...data])
+	console.time('heapSort')
+	const sorted = heapSort([...data])
+	console.timeEnd('heapSort')
 	console.log(sorted[9],oSorted[9])
 	console.log(sorted[91],oSorted[91])
 	console.log(sorted[276],oSorted[276])
-	console.log(sorted[833],oSorted[833])
+	console.log(sorted[25092],oSorted[25092])
+	console.log(sorted[35091],oSorted[35091])
+	console.log(sorted[43798],oSorted[43798])
+	console.log(sorted[49998],oSorted[49998])
+	console.log(sorted[49999],oSorted[49999])
 }
-// test()
+test()
 
 // console.time('defaultSort')
 // console.log(measureMemoryUsage(()=>[...data].sort())) //~60ms
@@ -53,13 +61,13 @@ function test(){
 // console.log(measureMemoryUsage(bubbleSort,[...data])) // >1min
 // console.timeEnd('bubbleSort')
 
-console.time('iterativeMergeSort')
-console.log(measureMemoryUsage(iterativeMergeSort,[...data])) // >1min
-console.timeEnd('iterativeMergeSort')
+// console.time('iterativeMergeSort')
+// console.log(measureMemoryUsage(iterativeMergeSort,[...data])) // >1min
+// console.timeEnd('iterativeMergeSort')
 
-console.time('mergeSort')
-console.log(measureMemoryUsage(mergeSort,[...data])) // >1min
-console.timeEnd('mergeSort')
+// console.time('mergeSort')
+// console.log(measureMemoryUsage(mergeSort,[...data])) // >1min
+// console.timeEnd('mergeSort')
 
 
 
