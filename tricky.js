@@ -61,3 +61,12 @@ async function fetchData() {
 
 fetchData();
 console.log('After fetchData'); // after fetchData; fetching data..., data fetched
+
+for(let i = 0; i <= 5; i++) {
+  new Promise((resolve) => {
+    setTimeout(() => {
+      console.log(i); // 0, 1, 2, 3, 4
+      resolve(i);
+    }, i * 1000);
+  })
+}
