@@ -77,33 +77,29 @@ function solution2(v,w,W){
 
 }
 
-// [
-//   {
-//     input: [
-//       [0,1,2]
-//     ],
-//     output: 0,
-//   },
-//   {
-//     input: [[4,3,2,1]],
-//     output: 2,
-//   },
-// 	{
-//     input: [[1,2,3,4,5,6,7,8,9,0]],
-//     output: -1,
-//   }, {
-//     input: [[2,1,3,5,2]],
-//     output: 1,
-//   },
-// ].forEach((a, i) => {
-//   console.time("idx:" + i);
-//   expect(smallestEqual(...a.input)).to.eql(a.output);
-//   console.timeEnd("idx:" + i);
-// });
+const memo = {}
+function recursiveSol(values,weights, capacity){
+  const key = weights.join(",")+":"+capacity
+  if(memo[key]) return memo[key]
+  let maxValue = 0
+  if(!weights.length) {memo[key] = 0;return memo[key]}
+  if(!weights.find(w=> w < capacity)) {memo[key] = 0;return memo[key]}
+  // console.log(weights, capacity)
+  
+  for(let i=0;i<weights.length;i++){
 
-expect(knapSack([60, 100, 120], [10, 20, 30], 50)).to.be(220);
-expect(knapSack([1, 2, 3], [4, 5, 1], 4)).to.be(3);
+      let remainingCapacity = capacity - weights[i]
 
+      maxValue = Math.max(recursiveSol(values.filter((w,idx)=> idx !== i), weights.filter((w,idx)=> idx !== i),remainingCapacity) + values[i], maxValue)
+  }
+  memo[key] = maxValue
+  return memo[key]
+
+}
+
+expect(recursiveSol([60, 100, 120], [10, 20, 30], 50)).to.be(220);
+expect(recursiveSol([1, 2, 3], [4, 5, 1], 4)).to.be(3);
+expect(recursiveSol([10, 40, 30, 50], [5, 4, 6, 3], 4)).to.be(50);
 expect(
   knapSack(
     [

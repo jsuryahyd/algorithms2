@@ -83,8 +83,8 @@ function countCombinationsBottomUp(amount, coins) {
 // const coins = [1,2,4,5,8,12]
 // const amount = 870;
 
-const coins = [1, 2, 5];
-const amount = 5;
+const coins = [ 2, 5, 7, 10];
+const amount = 54;
 
 // Top-Down Approach
 const combinationsTopDown = countCombinationsTopDown(amount, coins);

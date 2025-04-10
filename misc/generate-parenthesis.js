@@ -24,7 +24,7 @@ function genString(total, insertPos = 1, combinations) {
         );
   }
 
-  insertPos === total && combinations.push(str);
+  insertPos === total && 
   return str;
 }
 

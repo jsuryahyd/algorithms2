@@ -12,15 +12,18 @@ var graph = {
 	e:[],
 	f:[]
 }
-
+    //      a
+		// 		b   c
+		// 	d	   e
+		// f	
 function dfs_print(graph,root){
 	let current = null;
 	const yetToBeTraversed = [root];
 	let summation = ""
 	while(yetToBeTraversed.length){
-		console.log(yetToBeTraversed);
+		// console.log(yetToBeTraversed);
 		current = yetToBeTraversed.pop();
-		console.log(current);
+		// console.log(current);
 		summation = summation+current
 		for(let i of graph[current]){
 			yetToBeTraversed.push(i)
@@ -38,8 +41,8 @@ function dfs_recursive_print(graph,root){
 	return (summation)
 }
 
-console.log(dfs_print(graph,'a'));
-console.log(dfs_recursive_print(graph,'a'));
+console.log("dfs",dfs_print(graph,'a'));
+console.log("dfs", dfs_recursive_print(graph,'a'));
 
 
 function bfs_print(graph,root){
@@ -47,12 +50,12 @@ function bfs_print(graph,root){
 	const yetTobeTraversed = [root]
 	let summation = ""
 	while(yetTobeTraversed.length){
-		current = yetTobeTraversed.pop()
+		current = yetTobeTraversed.shift()
 		summation += current
 		for(let i of graph[current]){
-			yetTobeTraversed.unshift(i)
+			yetTobeTraversed.push(i)
 		}
 	}
 	return summation;
 }
-console.log(bfs_print(graph,'a'))
+console.log("bfs", bfs_print(graph,'a'))

@@ -19,7 +19,7 @@ function minCoinsBottomUp(total, coins){
 			for(let coin of coins){
 				if(i-coin < 0) continue;
 				memo[i] = Math.min(memo[i], memo[i-coin]+1)
-				console.log(memo)
+				// console.log(memo)
 			}
 		}
 		return memo[total]
