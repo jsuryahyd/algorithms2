@@ -82,6 +82,33 @@ function merge2(arr, leftStart, leftEnd, rightStart, rightEnd, tempArray) {
 }
 
 
+//iterative 2 
+function sortArray(nums) {
+  const q = []
+  nums.forEach(n=>q.push([n]))
+  while(q.length > 1){
+      let merged = []
+      const left = q.pop()
+      const right = q.pop()
+      let l =0;
+      let r =0;
+      while(l < left.length && r < right.length){
+          if(left[l] < right[r]){
+              merged.push(left[l])
+              l++
+          }else{
+              merged.push(right[r])
+              r++
+          }
+      }
+      left.slice(l).forEach(l=>merged.push(l))        
+      right.slice(r).forEach(r=>merged.push(r))
+      q.push(merged)
+  }
+  return q[0]
+};
+
+
 function main(){
   console.time();
 expect(
